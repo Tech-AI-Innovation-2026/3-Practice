@@ -28,11 +28,15 @@
 
 ### [4] Block 3 — Index 구축 (검색 구조화)
 
-- [ ] `SummaryIndex`를 사용하여 Node 리스트로 Index를 구축했는가?
+- [ ] Node 리스트로 Index를 구축했는가?
+- `SummaryIndex`: 전체 노드를 순차 반환 (유사도 검색 없음, LLM 요약용)
+- `VectorStoreIndex`: 임베딩 기반 유사도 검색 (RAG 검색에 적합, 임베딩 모델 필요)
+- 용도에 맞는 Index를 선택하세요. 반드시 `SummaryIndex`를 사용할 필요는 없습니다.
 
-### [5] Block 4 — QueryEngine 실행 (질의응답)
+### [5] Block 4 — Retriever / QueryEngine 실행 (질의응답)
 
-- [ ] `index.as_query_engine()`으로 QueryEngine을 생성하고, 질문을 던져 자연어 응답을 받았는가?
+- [ ] `index.as_retriever()`로 Retriever를 생성하여 관련 노드를 검색했는가? (LLM 불필요)
+- [ ] 또는 `index.as_query_engine()`으로 QueryEngine을 생성하여 자연어 응답을 받았는가? (LLM 필요)
 
 ### [6] 블랙박스 열기 — Logging 활성화
 
