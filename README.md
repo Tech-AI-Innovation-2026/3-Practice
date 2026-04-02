@@ -48,7 +48,9 @@
 - [ ] `SimpleDirectoryReader`에 적절한 `file_extractor`를 설정하여 각 확장자별 Reader를 매핑했는가?
 - [ ] 각 포맷별로 Document가 정상 로드되었는지 `len(documents)`와 메타데이터를 출력하여 확인했는가?
 - [ ] 전체 문서를 하나의 Index로 통합하여 질의응답이 동작하는가?
-- [ ] 아래 보고서 양식을 본인 레포지토리 `README.md` 하단에 작성하고, 코드와 함께 push했는가?
+- [ ] 아래 보고서 양식을 본인 레포지토리 `README.md` 하단에 작성하고, **반드시 `main` 브랜치에** 코드와 함께 push했는가?
+
+> **⚠️ 주의: `main` 브랜치가 아닌 다른 브랜치(master 등)에 push하면 채점 시 반영되지 않습니다.** `git push origin main`으로 push하세요.
 
 ---
 
