@@ -1,51 +1,237 @@
-> **⏰ 평가 안내**
-> - **대상 리파지토리**: 새로 생성하는 **`mcphttp-` prefix 리파지토리** (GitHub Classroom 초대 링크로 생성)
+> **평가 안내**
+> - **대상 리파지토리**: 본인의 `web-` prefix 리파지토리 (GitHub Classroom으로 생성된 본인 repo)
 > - **대상 브랜치**: `main`
-> - **마감**: **2026-04-30(목) 12:20 이전 commit** 만 채점
+> - **제출 파일**: `rag_endpoint.json`, `README.md`
+> - **자동평가 대상**: `GET /health`, `POST /retrieve`
+> - **인정 기준**: **12:20까지 `main` 브랜치에 commit된 내용만 인정**
+> - **자동 평가 시각**: **11:20**, **12:20**
 >
-> ⚠️ 지난주 `mcp-*` 리파지토리가 아닌 **새로 생성한 `mcphttp-*` 리파지토리에 commit 한 것만** 평가 대상입니다.
-> ⚠️ `main` 외의 브랜치 push 는 반영되지 않습니다.
+> 11:20과 12:20에 교수자 평가 서버가 여러분이 제출한 `api_base_url`에 접속해 자동 평가합니다. LLM 생성 답변은 이번 자동평가 대상이 아닙니다. RAG 시스템의 retrieve 결과(`contexts`)만 평가합니다.
 
-# 이번 주 실습: Streamable HTTP MCP + RAG 한계 발견
+# 이번 주 실습: Retrieval API 공개 + 리더보드 Baseline
 
-두 미션은 **하나의 VectorStoreIndex 위에서** 진행. Mission 2 가 만든 RAG 를 Mission 1 이 그대로 MCP 서버로 노출하는 구조.
+이번 주 목표는 본인이 만든 RAG 검색기를 외부 평가 서버가 호출할 수 있게 만드는 것입니다.
 
 ```
-[ VectorStoreIndex ] ──── Mission 2: Top-10 실패 케이스 발굴
-        ↑
-        │ 같은 index
-        ↓
-[ FastMCP @tool ]    ──── Mission 1: Streamable HTTP 서버로 노출
+내 RAG 서버
+  -> Cloudflare Quick Tunnel
+  -> public HTTPS URL
+  -> rag_endpoint.json에 URL 제출
+  -> 평가 서버가 /health, /retrieve 호출
+  -> 리더보드 점수 계산
 ```
 
-## 🎯 Mission 1 — Streamable HTTP MCP 서버
+핵심은 **답변 생성이 아니라 retrieval**입니다. 평가 서버는 질문을 보내고, 여러분의 서버가 반환한 `contexts` 안에 필요한 근거 정보가 들어 있는지 확인합니다.
 
-Mission 2에서 만든 VectorStoreIndex 기반 RAG QueryEngine 을 **Streamable HTTP** 트랜스포트로 노출.
+---
 
-- [ ] `mcp.run(transport="http", host="0.0.0.0", port=...)` 로 서버 기동
-- [ ] 별도 클라이언트 스크립트로 도구 호출 성공
-- [ ] 서버 기동 + 클라이언트 호출이 한 화면에 보이는 스크린샷 1장 첨부
+## Mission 1 — RAG API 서버 만들기
 
-> 힌트: 5주차 강의자료 §4 (트랜스포트), §4.6 (코드 비교) 참조
+본인 RAG 시스템에 아래 두 endpoint를 구현하세요.
 
-## 🚩 Mission 2 — RAG Top-10 실패 케이스 찾기
+### `GET /health`
 
-**VectorStoreIndex** 기반 RAG를 만들고, **Top-10 검색에 정답 근거 노드가 들어오지 않는 데이터-질문 페어**를 직접 발굴.
+서버와 인덱스가 평가 가능한 상태인지 확인합니다.
 
-- [ ] 본인이 준비한 자료로 VectorStoreIndex 구축 (**총 10MB 이하**)
-- [ ] 인덱스를 `storage/` 폴더에 영속화하여 **repo 에 함께 push** (`index.storage_context.persist("./storage")`)
-- [ ] 데이터 원본도 `data/` 폴더에 함께 push
-- [ ] 실패 질문에 대한 Top-10 검색 결과를 **`mission2_log.md`** 에 저장 (score · 텍스트 앞 200자 · metadata 포함)
-- [ ] `run_mission2.py` 한 줄 실행으로 `mission2_log.md` 가 재현되도록 작성 (평가자가 직접 돌려봄)
-- [ ] 실패 원인을 본인 언어로 분석해 `README.md` 에 2~3 문단 정리
+응답 예시:
 
-## 평가 기준
+```json
+{
+  "status": "ok",
+  "ready": true
+}
+```
 
-- ✅ Mission 1 정상 동작 + 서버 기동 스크린샷
-- ✅ Mission 2 — `storage/`·`data/`·`mission2_log.md`·`run_mission2.py` 모두 push, 재현 시 동일한 실패 결과 확인
-- ✅ git Discussion 참여도
+### `POST /retrieve`
 
-## 참고
+질문을 받아 관련 context를 반환합니다.
 
-- 지난주 가이드: [`README_W4_MCP_Gemini_RAG.md`](./README_W4_MCP_Gemini_RAG.md)
-- 3주차 RAG 기본기: [`README_llamaindex_basic.md`](./README_llamaindex_basic.md)
+요청 예시:
+
+```json
+{
+  "question": "출장비 초과 시 어떤 승인이 필요한가?",
+  "top_k": 5
+}
+```
+
+응답 예시:
+
+```json
+{
+  "contexts": [
+    {
+      "text": "국내출장 한도는 50만원이며 초과 시 부서장 승인 필요...",
+      "source": "Policy.pdf",
+      "score": 0.82
+    }
+  ]
+}
+```
+
+필수 조건:
+
+- `contexts`는 JSON list여야 합니다.
+- 각 context는 최소 `text` 필드를 가져야 합니다.
+- `source`, `score`는 권장 필드입니다.
+- context 하나의 `text`는 너무 길게 보내지 마세요. 1,000~2,000자 정도를 권장합니다.
+
+> **Mock RAG 부분 점수**: 실제 RAG 연결이 어려우면, 고정/하드코딩된 `contexts`를 반환하는 Mock 서버로 제출해도 부분 점수 인정. 단 endpoint 스펙(`/health`, `/retrieve`)과 응답 JSON 형식은 동일해야 합니다.
+
+---
+
+## Mission 2 — Cloudflare Quick Tunnel로 외부 공개
+
+Cloudflare Quick Tunnel을 사용하면 공유기 포트포워딩 없이 public HTTPS URL을 만들 수 있습니다.
+
+이번 실습은 Docker Compose 실행을 기준으로 합니다. 컨테이너 안 웹서버는 반드시 `0.0.0.0`에 bind해야 합니다.
+
+```bash
+uvicorn app:app --host 0.0.0.0 --port 8000
+```
+
+Docker Compose 예:
+
+```yaml
+services:
+  rag:
+    build: .
+    ports:
+      - "8000:8000"
+    command: uvicorn app:app --host 0.0.0.0 --port 8000
+```
+
+호스트에서 tunnel을 실행합니다.
+
+```bash
+cloudflared tunnel --url http://127.0.0.1:8000
+```
+
+Windows PowerShell 예:
+
+```powershell
+.\cloudflared.exe tunnel --url http://127.0.0.1:8000
+```
+
+구조:
+
+```
+Docker container
+  RAG API: 0.0.0.0:8000
+        |
+        | ports: 8000:8000
+        v
+Host PC
+  http://127.0.0.1:8000
+        |
+        | cloudflared tunnel
+        v
+https://*.trycloudflare.com
+```
+
+---
+
+## Mission 3 — Public URL로 직접 확인
+
+`localhost`가 아니라 Cloudflare가 발급한 public URL로 확인해야 합니다.
+
+```bash
+curl https://YOUR-TUNNEL.trycloudflare.com/health
+```
+
+```bash
+curl -X POST https://YOUR-TUNNEL.trycloudflare.com/retrieve \
+  -H "Content-Type: application/json" \
+  -d '{"question":"출장비 초과 시 어떤 승인이 필요한가?","top_k":5}'
+```
+
+Windows PowerShell에서는 `curl` 대신 `curl.exe`를 쓰면 혼동이 적습니다.
+
+```powershell
+curl.exe https://YOUR-TUNNEL.trycloudflare.com/health
+```
+
+---
+
+## Mission 4 — `rag_endpoint.json` 제출
+
+리파지토리 루트에 `rag_endpoint.json` 파일을 만들고 commit/push하세요.
+
+```json
+{
+  "api_base_url": "https://YOUR-TUNNEL.trycloudflare.com"
+}
+```
+
+주의:
+
+- 파일명은 정확히 `rag_endpoint.json`이어야 합니다.
+- `main` 브랜치에 push해야 합니다.
+- `api_base_url` 끝에는 `/health`나 `/retrieve`를 붙이지 마세요.
+- Cloudflare URL이 바뀌면 `rag_endpoint.json`을 수정해서 다시 commit/push하세요.
+
+---
+
+## Quick Tunnel URL 유지 규칙
+
+Cloudflare Quick Tunnel URL은 `cloudflared` 프로세스가 살아 있는 동안 유지됩니다.
+
+유지되는 경우:
+
+```text
+cloudflared 프로세스는 계속 실행
++ RAG 웹서버/Docker 컨테이너만 재시작
+-> URL 유지
+```
+
+바뀌는 경우:
+
+```text
+cloudflared 종료
+PC 재부팅
+cloudflared 재실행
+-> 새 URL 발급
+```
+
+따라서 평가 시간에는 `cloudflared`를 끄지 마세요. RAG 서버나 Docker 컨테이너는 재시작해도 됩니다.
+
+---
+
+## 이번 주 보고서
+
+본인 repo의 `README.md` 하단에 아래 내용을 작성하세요.
+
+```markdown
+# Retrieval API Baseline Report
+
+## 1. 실행 방식
+- RAG 서버 실행 방식: 로컬 / Docker / 기타
+- Cloudflare Quick Tunnel URL:
+- 사용한 데이터:
+- 사용한 index/retriever:
+
+## 2. Public URL self-check
+- /health 결과:
+- /retrieve 테스트 질문:
+- /retrieve 반환 contexts 수:
+
+## 3. Baseline 검색 결과
+| 질문 | 기대 정보 | 검색된 context에 포함 여부 | 실패 원인 |
+|---|---|---|---|
+| | | | |
+
+## 4. 다음 개선 계획
+- chunking:
+- metadata:
+- query rewrite:
+- reranker/top_k:
+```
+
+---
+
+## 자동 평가 안내
+
+- 11:20과 12:20에 교수자 평가 서버가 `rag_endpoint.json`의 `api_base_url`을 읽어 자동 평가합니다.
+- 12:20까지 `main` 브랜치에 commit된 내용만 인정합니다.
+- 자동평가는 RAG 시스템의 retrieve 결과만 평가합니다.
+- LLM 생성 답변은 자동평가 대상이 아닙니다.
