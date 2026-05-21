@@ -168,7 +168,9 @@ Windows PowerShell에서는 `curl.exe`를 쓰세요.
 7. `nDCG@10` 계산
 8. GitHub Issue 리더보드 갱신
 
-서버가 꺼져 있거나 URL이 바뀌면 `latest_status`가 실패 상태로 표시됩니다. 이전에 성공한 최고 점수는 `best_score_so_far`로 보존됩니다.
+서버가 꺼져 있거나 URL이 바뀌면 `latest_status`가 실패 상태로 표시됩니다. 현재 실습에서 이전에 성공한 최고 점수는 `best_score_so_far`로 보존됩니다.
+
+`best_score_so_far`는 실습 단위로 관리됩니다. 새 실습이 시작되면 리더보드와 함께 초기화되며, 이전 실습의 최고 점수는 다음 실습으로 이어지지 않습니다.
 
 ## Discussion 평가
 
