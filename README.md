@@ -1,39 +1,53 @@
-> **평가 안내**
-> - **대상 리파지토리**: 본인의 `web-` prefix 리파지토리 (GitHub Classroom으로 생성된 본인 repo)
-> - **대상 브랜치**: `main`
-> - **제출 파일**: `rag_endpoint.json`, `README.md`
-> - **자동평가 대상**: `GET /health`, `POST /retrieve`
-> - **인정 기준**: **12:20까지 `main` 브랜치에 commit된 내용만 인정**
-> - **자동 평가 시각**: **11:20**, **12:20**
->
-> 11:20과 12:20에 교수자 평가 서버가 여러분이 제출한 `api_base_url`에 접속해 자동 평가합니다. LLM 생성 답변은 이번 자동평가 대상이 아닙니다. RAG 시스템의 retrieve 결과(`contexts`)만 평가합니다.
+# RAG Retrieval Live Evaluation
 
-# 이번 주 실습: Retrieval API 공개 + 리더보드 Baseline
+이번 실습부터는 여러분의 `web-` repo에 제출된 RAG endpoint를 교수자 평가 서버가 10분마다 호출하고, GitHub Issue 리더보드를 갱신합니다.
 
-이번 주 목표는 본인이 만든 RAG 검색기를 외부 평가 서버가 호출할 수 있게 만드는 것입니다.
+목표는 LLM 답변 생성이 아닙니다. **SciFact 문서를 검색해서 관련 문서의 `doc_id`를 상위 rank에 올리는 retrieval 성능**을 평가합니다.
 
+## 평가 대상
+
+- 대상 repo: 본인의 `web-` prefix GitHub Classroom repo
+- 대상 branch: `main`
+- 제출 파일: repo root의 `rag_endpoint.json`
+- 제출 코드: RAG 서버, ingest, index 생성, retrieval 구현 코드
+- 평가 endpoint: `GET /health`, `POST /retrieve`
+- 평가 metric: `nDCG@10`
+- 평가 주기: 약 10분마다 교수자 Windows 평가 서버가 실행
+- 공개 결과: 이 repo의 GitHub Issue 리더보드
+
+## 데이터
+
+ingest 대상 데이터는 이 `3-Practice` repo에 포함되어 있습니다. 학생은 이 데이터를 받아서 본인 RAG 시스템에 넣어야 합니다.
+
+```text
+data/scifact/corpus.jsonl
 ```
-내 RAG 서버
-  -> Cloudflare Quick Tunnel
-  -> public HTTPS URL
-  -> rag_endpoint.json에 URL 제출
-  -> 평가 서버가 /health, /retrieve 호출
-  -> 리더보드 점수 계산
+
+학생 RAG 시스템에는 **`data/scifact/corpus.jsonl` 전체**를 넣으세요.
+
+`corpus.jsonl`은 JSON Lines 형식이며, 한 줄이 문서 하나입니다.
+
+```json
+{
+  "_id": "31715818",
+  "title": "...",
+  "text": "..."
+}
 ```
 
-핵심은 **답변 생성이 아니라 retrieval**입니다. 평가 서버는 질문을 보내고, 여러분의 서버가 반환한 `contexts` 안에 필요한 근거 정보가 들어 있는지 확인합니다.
+여기서 `_id`가 평가에 쓰는 원본 `doc_id`입니다.
 
----
+평가 query와 정답 qrels는 공개하지 않습니다. 학생에게 공개되는 데이터는 검색 대상 문서인 `corpus.jsonl`뿐입니다.
 
-## Mission 1 — RAG API 서버 만들기
+평가 서버는 비공개 train/test qrels를 병합한 뒤, 그중 어떤 query를 보낼지 평가 시점에 선택합니다. 학생은 어떤 query가 들어올지 모른다고 가정해야 합니다. 특정 query_id에 대한 정답 `doc_id`를 하드코딩해서 반환하는 방식은 실습 취지에 맞지 않습니다.
 
-본인 RAG 시스템에 아래 두 endpoint를 구현하세요.
+## 필수 구현
 
 ### `GET /health`
 
-서버와 인덱스가 평가 가능한 상태인지 확인합니다.
+RAG 서버와 index가 준비되었는지 확인합니다.
 
-응답 예시:
+응답 예:
 
 ```json
 {
@@ -44,26 +58,27 @@
 
 ### `POST /retrieve`
 
-질문을 받아 관련 context를 반환합니다.
-
-요청 예시:
+요청 예:
 
 ```json
 {
-  "question": "출장비 초과 시 어떤 승인이 필요한가?",
-  "top_k": 5
+  "query_id": "eval_001",
+  "question": "scientific claim text from the evaluator",
+  "top_k": 10
 }
 ```
 
-응답 예시:
+응답 예:
 
 ```json
 {
+  "query_id": "eval_001",
   "contexts": [
     {
-      "text": "국내출장 한도는 50만원이며 초과 시 부서장 승인 필요...",
-      "source": "Policy.pdf",
-      "score": 0.82
+      "doc_id": "31715818",
+      "chunk_id": "31715818::chunk_003",
+      "score": 0.91,
+      "text": "retrieved chunk text"
     }
   ]
 }
@@ -72,90 +87,20 @@
 필수 조건:
 
 - `contexts`는 JSON list여야 합니다.
-- 각 context는 최소 `text` 필드를 가져야 합니다.
-- `source`, `score`는 권장 필드입니다.
-- context 하나의 `text`는 너무 길게 보내지 마세요. 1,000~2,000자 정도를 권장합니다.
+- 각 context에는 원본 문서 ID인 `doc_id`가 있어야 합니다.
+- `doc_id`는 `corpus.jsonl`의 `_id`와 정확히 같아야 합니다.
+- 각 context에는 numeric `score`가 있어야 합니다.
+- `score`는 높을수록 더 관련 있는 문서라는 의미여야 합니다.
+- `text`는 디버깅을 위해 포함하세요.
+- `chunk_id`는 권장 필드입니다.
 
-> **Mock RAG 부분 점수**: 실제 RAG 연결이 어려우면, 고정/하드코딩된 `contexts`를 반환하는 Mock 서버로 제출해도 부분 점수 인정. 단 endpoint 스펙(`/health`, `/retrieve`)과 응답 JSON 형식은 동일해야 합니다.
+chunking은 자유입니다. 문서를 원하는 크기로 자르고 overlap을 넣어도 됩니다. 단, 모든 chunk metadata에 원본 `doc_id`를 반드시 보존해야 합니다.
 
----
+평가 서버는 `score` 기준 내림차순으로 context rank를 만든 뒤, 같은 `doc_id`는 첫 등장만 유지하고, 문서 단위 ranked list로 바꿔 `nDCG@10`을 계산합니다.
 
-## Mission 2 — Cloudflare Quick Tunnel로 외부 공개
+## `rag_endpoint.json` 제출
 
-Cloudflare Quick Tunnel을 사용하면 공유기 포트포워딩 없이 public HTTPS URL을 만들 수 있습니다.
-
-이번 실습은 Docker Compose 실행을 기준으로 합니다. 컨테이너 안 웹서버는 반드시 `0.0.0.0`에 bind해야 합니다.
-
-```bash
-uvicorn app:app --host 0.0.0.0 --port 8000
-```
-
-Docker Compose 예:
-
-```yaml
-services:
-  rag:
-    build: .
-    ports:
-      - "8000:8000"
-    command: uvicorn app:app --host 0.0.0.0 --port 8000
-```
-
-호스트에서 tunnel을 실행합니다.
-
-```bash
-cloudflared tunnel --url http://127.0.0.1:8000
-```
-
-Windows PowerShell 예:
-
-```powershell
-.\cloudflared.exe tunnel --url http://127.0.0.1:8000
-```
-
-구조:
-
-```
-Docker container
-  RAG API: 0.0.0.0:8000
-        |
-        | ports: 8000:8000
-        v
-Host PC
-  http://127.0.0.1:8000
-        |
-        | cloudflared tunnel
-        v
-https://*.trycloudflare.com
-```
-
----
-
-## Mission 3 — Public URL로 직접 확인
-
-`localhost`가 아니라 Cloudflare가 발급한 public URL로 확인해야 합니다.
-
-```bash
-curl https://YOUR-TUNNEL.trycloudflare.com/health
-```
-
-```bash
-curl -X POST https://YOUR-TUNNEL.trycloudflare.com/retrieve \
-  -H "Content-Type: application/json" \
-  -d '{"question":"출장비 초과 시 어떤 승인이 필요한가?","top_k":5}'
-```
-
-Windows PowerShell에서는 `curl` 대신 `curl.exe`를 쓰면 혼동이 적습니다.
-
-```powershell
-curl.exe https://YOUR-TUNNEL.trycloudflare.com/health
-```
-
----
-
-## Mission 4 — `rag_endpoint.json` 제출
-
-리파지토리 루트에 `rag_endpoint.json` 파일을 만들고 commit/push하세요.
+본인 `web-` repo root에 아래 파일을 만들고 commit/push하세요.
 
 ```json
 {
@@ -166,72 +111,113 @@ curl.exe https://YOUR-TUNNEL.trycloudflare.com/health
 주의:
 
 - 파일명은 정확히 `rag_endpoint.json`이어야 합니다.
-- `main` 브랜치에 push해야 합니다.
-- `api_base_url` 끝에는 `/health`나 `/retrieve`를 붙이지 마세요.
-- Cloudflare URL이 바뀌면 `rag_endpoint.json`을 수정해서 다시 commit/push하세요.
+- `main` branch에 push해야 합니다.
+- `api_base_url` 끝에 `/health`나 `/retrieve`를 붙이지 마세요.
+- Cloudflare URL이 바뀌면 이 파일을 수정해서 다시 push하세요.
 
----
+## Cloudflare Quick Tunnel
 
-## Quick Tunnel URL 유지 규칙
+RAG API 서버는 Docker 또는 로컬에서 실행해도 됩니다. 서버는 외부에서 접근 가능해야 하며, Docker 안에서는 `0.0.0.0`에 bind해야 합니다.
 
-Cloudflare Quick Tunnel URL은 `cloudflared` 프로세스가 살아 있는 동안 유지됩니다.
+예:
 
-유지되는 경우:
-
-```text
-cloudflared 프로세스는 계속 실행
-+ RAG 웹서버/Docker 컨테이너만 재시작
--> URL 유지
+```bash
+uvicorn app:app --host 0.0.0.0 --port 8000
 ```
 
-바뀌는 경우:
+host PC에서 Cloudflare tunnel을 실행합니다.
 
-```text
-cloudflared 종료
-PC 재부팅
-cloudflared 재실행
--> 새 URL 발급
+```bash
+cloudflared tunnel --url http://127.0.0.1:8000
 ```
 
-따라서 평가 시간에는 `cloudflared`를 끄지 마세요. RAG 서버나 Docker 컨테이너는 재시작해도 됩니다.
+Windows PowerShell:
 
----
+```powershell
+.\cloudflared.exe tunnel --url http://127.0.0.1:8000
+```
 
-## 이번 주 보고서
+Cloudflare URL은 `cloudflared` 프로세스가 살아 있는 동안 유지됩니다. `cloudflared`를 끄거나 PC를 재부팅하면 URL이 바뀝니다.
 
-본인 repo의 `README.md` 하단에 아래 내용을 작성하세요.
+## 직접 확인
+
+`localhost`가 아니라 Cloudflare public URL로 확인하세요.
+
+```bash
+curl https://YOUR-TUNNEL.trycloudflare.com/health
+```
+
+```bash
+curl -X POST https://YOUR-TUNNEL.trycloudflare.com/retrieve \
+  -H "Content-Type: application/json" \
+  -d '{"query_id":"selfcheck_001","question":"scientific claim text for testing","top_k":10}'
+```
+
+Windows PowerShell에서는 `curl.exe`를 쓰세요.
+
+## 리더보드
+
+교수자 Windows 평가 서버가 약 10분마다 다음 작업을 수행합니다.
+
+1. `web-` repo 목록 조회
+2. 각 repo의 `rag_endpoint.json` 읽기
+3. `/health` 확인
+4. SciFact query subset으로 `/retrieve` 호출
+5. `contexts[*].score` 기준으로 검색 결과 정렬
+6. `contexts[*].doc_id`를 문서 rank로 변환
+7. `nDCG@10` 계산
+8. GitHub Issue 리더보드 갱신
+
+서버가 꺼져 있거나 URL이 바뀌면 `latest_status`가 실패 상태로 표시됩니다. 이전에 성공한 최고 점수는 `best_score_so_far`로 보존됩니다.
+
+## 코드 제출
+
+본인 `web-` repo에는 평가 endpoint만 올리는 것이 아니라, 재현 가능한 구현 코드도 함께 올려야 합니다.
+
+- RAG API 서버 코드
+- SciFact ingest 코드 또는 ingest 절차
+- index 생성 코드 또는 index 로딩 코드
+- retrieval 코드
+- 실행에 필요한 dependency 파일
+- 실행 방법을 적은 `README.md`
+
+API key, token, 개인 경로 같은 secret은 repo에 올리지 마세요.
+
+## 보고서
+
+본인 `web-` repo의 `README.md` 하단에 아래 내용을 간단히 작성하세요.
 
 ```markdown
-# Retrieval API Baseline Report
+# SciFact Retrieval Report
 
-## 1. 실행 방식
-- RAG 서버 실행 방식: 로컬 / Docker / 기타
+## 실행 방식
+- 제출 코드 위치:
+- RAG 서버 실행 방식:
+- 서버 실행 명령:
 - Cloudflare Quick Tunnel URL:
-- 사용한 데이터:
-- 사용한 index/retriever:
+- 사용한 retriever/index:
 
-## 2. Public URL self-check
+## 데이터 처리
+- corpus ingest 방식:
+- title/text 사용 방식:
+- chunk size / overlap:
+- doc_id 보존 방식:
+
+## 인덱스와 검색
+- embedding 모델:
+- vector store/index:
+- score 계산 방식:
+- top_k 설정:
+
+## 성능 개선 방법
+- baseline에서 바꾼 점:
+- 성능을 높이기 위해 시도한 방법:
+- 효과가 있었던 방법:
+
+## Self-check
 - /health 결과:
-- /retrieve 테스트 질문:
-- /retrieve 반환 contexts 수:
-
-## 3. Baseline 검색 결과
-| 질문 | 기대 정보 | 검색된 context에 포함 여부 | 실패 원인 |
-|---|---|---|---|
-| | | | |
-
-## 4. 다음 개선 계획
-- chunking:
-- metadata:
-- query rewrite:
-- reranker/top_k:
+- 자체 테스트 질문:
+- 자체 테스트 검색 결과 top doc_id:
+- 자체 테스트 검색 결과 top score:
+- 실패한 점 / 개선할 점:
 ```
-
----
-
-## 자동 평가 안내
-
-- 11:20과 12:20에 교수자 평가 서버가 `rag_endpoint.json`의 `api_base_url`을 읽어 자동 평가합니다.
-- 12:20까지 `main` 브랜치에 commit된 내용만 인정합니다.
-- 자동평가는 RAG 시스템의 retrieve 결과만 평가합니다.
-- LLM 생성 답변은 자동평가 대상이 아닙니다.
