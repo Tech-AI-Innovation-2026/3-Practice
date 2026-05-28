@@ -283,15 +283,28 @@ API key, token, 개인 경로 같은 secret은 repo에 올리지 마세요.
 
 ## 참고 구현 방향
 
-최근 좋은 성능을 보인 구현들은 공통적으로 "답변 생성"보다 "정답 문서 ID를 상위에 올리는 retrieval 문제"에 집중했습니다. 아래 내용은 참고 방향이며, 그대로 복사할 정답 구현은 아닙니다.
+최근 좋은 성능을 보인 구현들은 공통적으로 "답변 생성"보다 "정답 문서 ID를 상위에 올리는 retrieval 문제"에 집중했습니다. 아래 내용은 참고 방향이며, 그대로 복사할 정답 구현은 아닙니다. 함수명은 예시이므로 본인 코드 구조에 맞게 바꾸면 됩니다.
 
-- `corpus.jsonl`의 `_id`를 모든 검색 결과의 `doc_id`로 끝까지 보존합니다.
-- `text`가 비어 있고 `filename`만 있는 문서는 실제 파일을 읽어서 ingest합니다.
-- HWP, Python source, 일반 텍스트처럼 파일 형식이 다른 문서는 같은 방식으로 처리하지 말고 형식에 맞는 reader를 둡니다.
-- 제목, 파일명, 경로, 코드 symbol, 문서 metadata처럼 검색에 도움이 되는 정보를 chunk metadata에 남깁니다.
-- dense vector 검색만 쓰기보다 keyword 기반 검색을 함께 사용하면 짧은 질의, 고유명사, 함수명, 조항 번호 같은 질의에서 안정성이 좋아질 수 있습니다.
-- 여러 검색 결과를 합친 뒤 재순위화하는 구조를 쓰면 유사하지만 정답이 아닌 문서가 앞에 오는 문제를 줄일 수 있습니다.
-- chunk 단위로 검색하더라도 최종 응답에서는 같은 문서가 반복되지 않도록 문서 단위 ranking을 점검하세요.
-- `/retrieve` 응답에는 `doc_id`, `chunk_id`, `score`, `text`를 명확히 포함하고, `top_k` 요청값을 지키세요.
+### Ingest 단계
 
-성능 개선을 할 때는 먼저 실패한 query를 모아 어떤 유형에서 틀리는지 확인하세요. 예를 들어 keyword가 중요한 경우, 의미가 비슷한 문서가 많은 경우, 파일 파싱이 안 된 경우, metadata가 사라진 경우는 개선 방법이 서로 다릅니다.
+- `load_corpus()`에서 `corpus.jsonl`을 직접 읽고, 각 row의 `_id`를 내부 문서 ID로 저장하세요.
+- `read_filename_document()` 같은 처리를 두어 `text`가 비어 있고 `filename`만 있는 row도 실제 파일 내용으로 변환하세요.
+- `extract_hwp_text()`, `read_code_file()`, `read_plain_text()`처럼 파일 형식별 reader를 분리하면 파싱 실패 원인을 찾기 쉽습니다.
+- Python source는 통째 텍스트로만 넣기보다 `parse_python_symbols()`처럼 class, function, method 이름과 line 정보를 metadata에 남기면 코드 검색 질의에 유리합니다.
+- chunk를 만들 때 `make_node()` 또는 `build_nodes()` 단계에서 `doc_id`, `chunk_id`, `title`, `filename`, `source_path`, `symbol_name`, `symbol_path` 같은 metadata를 보존하세요.
+
+### Retrieval 단계
+
+- `build_vector_index()`와 `build_bm25_index()`를 분리해 dense 검색과 keyword 검색을 모두 준비하는 방식이 안정적입니다.
+- `hybrid_retrieve()`에서 vector 후보와 BM25 후보를 함께 모으고, rank fusion 방식으로 후보를 합치면 한쪽 검색기가 놓친 문서를 보완할 수 있습니다.
+- `query_profile()`에서 숫자, 약어, 함수명처럼 exact match가 중요한 질의를 감지하면 keyword 검색 신호를 더 강하게 활용할 수 있습니다.
+- `rerank_candidates()`를 두어 title match, exact token match, filename match, symbol match, path match 같은 feature를 이용해 후보 순서를 다시 조정하세요.
+- 가능하면 `cross_encoder_rerank()` 같은 2단계 reranking을 붙여 의미적으로 비슷하지만 정답이 아닌 문서를 뒤로 밀 수 있습니다. 단, 속도가 느려질 수 있으므로 timeout을 함께 확인해야 합니다.
+- `top_unique_documents()` 또는 `dedupe_by_doc_id()`처럼 같은 문서의 여러 chunk가 반복 반환되지 않도록 최종 ranking을 문서 단위로 점검하세요.
+
+### API 응답 점검
+
+- `/retrieve` 응답의 각 context에는 `doc_id`, `chunk_id`, `score`, `text`가 있어야 합니다.
+- `doc_id`는 chunk ID나 파일명이 아니라 `corpus.jsonl`의 `_id`와 일치해야 합니다.
+- `/health`에서 index가 실제로 로드되었는지, ingest한 문서 수가 기대와 맞는지 확인할 수 있게 하세요.
+- 자체 테스트에서는 `debug_retrieve()` 같은 함수를 만들어 query별 top 문서 ID와 score를 출력하고, 실패한 query를 유형별로 모아 개선하세요.
