@@ -302,6 +302,16 @@ API key, token, 개인 경로 같은 secret은 repo에 올리지 마세요.
 - 가능하면 `cross_encoder_rerank()` 같은 2단계 reranking을 붙여 의미적으로 비슷하지만 정답이 아닌 문서를 뒤로 밀 수 있습니다. 단, 속도가 느려질 수 있으므로 timeout을 함께 확인해야 합니다.
 - `top_unique_documents()` 또는 `dedupe_by_doc_id()`처럼 같은 문서의 여러 chunk가 반복 반환되지 않도록 최종 ranking을 문서 단위로 점검하세요.
 
+### Code/document graph 아이디어
+
+Python source나 긴 문서는 chunk를 독립적으로만 검색하면 관련 함수 주변의 class, helper, sibling method를 놓치기 쉽습니다. 이 경우 `build_node_graph()` 같은 단계를 두어 chunk 사이의 관계를 보조 index로 만들 수 있습니다.
+
+- `code_parent`, `code_child`, `code_sibling` 관계를 만들면 class와 method, 같은 class 안의 method들을 함께 탐색할 수 있습니다.
+- `prev_next`, `same_doc`, `same_heading` 관계를 만들면 긴 문서나 HWP 조항처럼 앞뒤 문맥이 중요한 경우 후보 확장에 도움이 됩니다.
+- `entity_index` 또는 `symbol_index`를 만들어 query에 나온 함수명, class명, 파일명, 주요 entity가 포함된 node를 빠르게 찾을 수 있습니다.
+- `expand_graph_candidates()` 단계에서 1차 검색 상위 후보의 이웃 node를 추가하고, `graph_boost` 같은 보조 점수로 재정렬하면 단순 vector 검색이 놓친 관련 chunk를 회수할 수 있습니다.
+- graph 확장은 모든 query에 강제로 적용하기보다 `query_profile()`로 코드 탐색형 질의, relation 질의, 긴 문맥 질의를 구분해 선택적으로 적용하는 편이 안전합니다.
+
 ### API 응답 점검
 
 - `/retrieve` 응답의 각 context에는 `doc_id`, `chunk_id`, `score`, `text`가 있어야 합니다.
