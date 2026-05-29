@@ -30,7 +30,6 @@
 - 제출 코드: RAG 서버, ingest, index 생성, retrieval 구현 코드
 - 평가 endpoint: `GET /health`, `POST /retrieve`
 - 평가 metric: `nDCG@10`
-- 리더보드 순위 점수: 최근 유효 평가의 moving average
 - 평가 주기: 약 10분마다 교수자 Windows 평가 서버가 실행
 - 공개 결과: 이 repo의 GitHub Issue 리더보드
 
@@ -194,38 +193,20 @@ Windows PowerShell에서는 `curl.exe`를 쓰세요.
 7. `nDCG@10` 계산
 8. GitHub Issue 리더보드 갱신
 
-각 평가 턴의 원점수는 비공개 질문 10개의 평균 `nDCG@10`입니다.
+서버가 꺼져 있거나 URL이 바뀌면 `latest_status`가 실패 상태로 표시됩니다. 현재 실습에서 이전에 성공한 최고 점수는 `best_score_so_far`로 보존됩니다.
 
-```text
-turn_score_t = mean(nDCG@10 over 10 hidden queries at polling turn t)
-```
-
-리더보드 순위는 한 번의 최고점이 아니라 최근 유효 평가 점수의 moving average로 계산합니다. 최근 12번의 polling 기록 중에서 유효한 평가만 고르고, 그중 가장 최근 5개를 평균냅니다.
-
-```text
-V_t = valid evaluation turns among the latest 12 polling turns up to t
-W_t = last min(5, |V_t|) turns in V_t
-leaderboard_score_t = (1 / |W_t|) * sum(turn_score_i for i in W_t)
-```
-
-유효 평가는 `/health`와 `/retrieve`가 최소 1개 이상 성공해서 실제 검색 성능을 측정할 수 있었던 턴입니다. 서버가 꺼져 있거나 URL이 바뀐 `health_failed` 턴은 moving average에 0점으로 넣지 않습니다. 대신 `latest_status`, `latest_score`, `stale` 컬럼으로 현재 장애 상태와 몇 턴째 유효 평가가 없었는지를 표시합니다.
-
-이 방식은 RAG 서버나 tunnel이 일시적으로 실패한 턴의 충격을 줄이면서도, 한 번의 운 좋은 최고점이 계속 순위를 고정하지 못하게 하기 위한 것입니다. 장애가 오래 지속되어 최근 12번의 polling 안에 유효 평가가 없으면 `leaderboard_score`는 0이 됩니다.
-
-`best_score_so_far`는 참고용으로만 남습니다. 현재 순위 계산에는 `leaderboard_score`가 사용됩니다.
+`best_score_so_far`는 실습 단위로 관리됩니다. 새 실습이 시작되면 리더보드와 함께 초기화되며, 이전 실습의 최고 점수는 다음 실습으로 이어지지 않습니다.
 
 ## 주차별 최종 점수
 
-각 주차의 리더보드는 별도 Issue로 백업합니다. 최종 rank는 주차별 `leaderboard_score`를 사용해 계산합니다.
+각 주차의 리더보드는 별도 Issue로 백업합니다. 최종 rank는 주차별 `best_score_so_far`를 사용해 계산합니다.
 
 discount factor는 `0.5`입니다. 최근 주차일수록 더 크게 반영합니다.
 
 예를 들어 3개 주차를 모두 진행한 경우:
 
 ```text
-final_score = 0.25 * week1_leaderboard_score
-            + 0.5  * week2_leaderboard_score
-            + 1.0  * week3_leaderboard_score
+final_score = 0.25 * week1_best + 0.5 * week2_best + 1.0 * week3_best
 ```
 
 정규화 여부와 관계없이 rank 순서는 같습니다. 이 방식은 앞 주차 성과를 반영하되, 뒤 주차에서 크게 개선하면 역전할 수 있도록 설계한 것입니다.
