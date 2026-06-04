@@ -183,7 +183,12 @@ Windows PowerShell에서는 `curl.exe`를 쓰세요.
 
 ## 리더보드
 
-교수자 Windows 평가 서버가 약 10분마다 다음 작업을 수행합니다.
+이번 실습의 100개 hidden query 평가는 다음 주 최종평가를 미리 점검하기 위한 시뮬레이션입니다.
+2026-06-04 11:30 KST 평가 결과는 리더보드 확인용이며, 실습 점수에는 반영하지 않습니다.
+
+투표 결과에 따라 최종 승부는 마지막 주 평가에서 결정합니다. 마지막 주에는 새로 만든 hidden query 100개로 평가하며, 그 결과가 최종 순위 결정에 사용됩니다.
+
+교수자 Windows 평가 서버가 다음 작업을 수행합니다.
 
 1. `web-` repo 목록 조회
 2. 각 repo의 `rag_endpoint.json` 읽기
@@ -194,10 +199,10 @@ Windows PowerShell에서는 `curl.exe`를 쓰세요.
 7. `nDCG@10` 계산
 8. GitHub Issue 리더보드 갱신
 
-각 평가 턴의 원점수는 비공개 질문 10개의 평균 `nDCG@10`입니다.
+각 평가 턴의 원점수는 비공개 질문 100개의 평균 `nDCG@10`입니다.
 
 ```text
-turn_score_t = mean(nDCG@10 over 10 hidden queries at polling turn t)
+turn_score_t = mean(nDCG@10 over 100 hidden queries at polling turn t)
 ```
 
 리더보드 순위는 한 번의 최고점이 아니라 최근 유효 평가 점수의 moving average로 계산합니다. 최근 12번의 polling 기록 중에서 유효한 평가만 고르고, 그중 가장 최근 5개를 평균냅니다.
@@ -214,21 +219,17 @@ leaderboard_score_t = (1 / |W_t|) * sum(turn_score_i for i in W_t)
 
 `best_score_so_far`는 참고용으로만 남습니다. 현재 순위 계산에는 `leaderboard_score`가 사용됩니다.
 
-## 주차별 최종 점수
+## 최종 순위
 
-각 주차의 리더보드는 별도 Issue로 백업합니다. 최종 rank는 주차별 `leaderboard_score`를 사용해 계산합니다.
+이번 실습 리더보드는 점수 산정에 들어가지 않습니다. 최종 rank는 마지막 주 100개 hidden query 평가 결과로 결정합니다.
 
-discount factor는 `0.5`입니다. 최근 주차일수록 더 크게 반영합니다.
-
-예를 들어 3개 주차를 모두 진행한 경우:
+예상 형태:
 
 ```text
-final_score = 0.25 * week1_leaderboard_score
-            + 0.5  * week2_leaderboard_score
-            + 1.0  * week3_leaderboard_score
+final_score = mean(nDCG@10 over 100 final hidden queries)
 ```
 
-정규화 여부와 관계없이 rank 순서는 같습니다. 이 방식은 앞 주차 성과를 반영하되, 뒤 주차에서 크게 개선하면 역전할 수 있도록 설계한 것입니다.
+마지막 주 평가에는 이번 실습에서 사용한 hidden query가 아니라 새로 만든 hidden query를 사용합니다.
 
 ## Discussion 평가
 
