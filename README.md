@@ -1,12 +1,12 @@
-# RAG Retrieval Live Evaluation
+# RAG Retrieval Final Project Evaluation
 
-이번 실습은 `web-` repo에 제출된 RAG endpoint를 교수자 평가 서버가 주기적으로 호출하고, GitHub Issue 리더보드를 갱신하는 방식으로 진행합니다.
+기말 프로젝트 최종 평가는 `web-` repo에 제출된 RAG endpoint를 교수자 평가 서버가 호출하고, 비공개 hidden query 100개에 대한 retrieval 성능을 측정하는 방식으로 진행합니다.
 
 목표는 LLM 답변 생성이 아닙니다. **검색 대상 문서를 잘 ingest하고, 질문과 관련된 원본 `doc_id`를 상위 rank에 올리는 retrieval 성능**을 평가합니다.
 
-## 중요: 데이터가 추가되었습니다
+## 중요: 최종 평가 전 확인
 
-기존 SciFact corpus에 challenge 문서가 추가되었습니다. 기존 index를 그대로 쓰면 새 평가 문서를 검색할 수 없습니다.
+기존 SciFact corpus에 challenge 문서가 추가되어 있습니다. 기존 index를 그대로 쓰면 새 평가 문서를 검색할 수 없습니다.
 
 반드시 최신 `3-Practice`를 pull한 뒤 **`data/scifact/corpus.jsonl` 전체를 다시 ingest**하세요.
 
@@ -30,8 +30,8 @@
 - 제출 코드: RAG 서버, ingest, index 생성, retrieval 구현 코드
 - 평가 endpoint: `GET /health`, `POST /retrieve`
 - 평가 metric: `nDCG@10`
-- 리더보드 순위 점수: 최근 유효 평가의 moving average
-- 평가 주기: 약 10분마다 교수자 Windows 평가 서버가 실행
+- 최종 평가 점수: fixed hidden query 100개의 평균 `nDCG@10`
+- 평가 방식: 교수자 평가 서버가 최종 평가 시점에 100문항을 한 번 실행
 - 공개 결과: 이 repo의 GitHub Issue 리더보드
 
 ## 데이터
@@ -68,6 +68,27 @@ data/scifact/corpus.jsonl
 여기서 `_id`가 평가에 쓰는 원본 `doc_id`입니다. chunking은 자유지만, 모든 chunk metadata에 원본 `doc_id`를 반드시 보존해야 합니다.
 
 평가 서버는 비공개 평가 질문과 정답을 사용합니다. 학생은 어떤 질문이 들어올지 모른다고 가정해야 합니다. 특정 `query_id`에 대한 정답 `doc_id`를 하드코딩해서 반환하는 방식은 실습 취지에 맞지 않습니다.
+
+## 최종 평가 문제 구성
+
+최종 평가는 새로 고정한 hidden query 100개로 진행합니다. 평가 질문 텍스트와 정답 qrels는 공개하지 않습니다. 아래 구성은 어떤 역량을 평가하는지 설명하기 위한 범위 안내입니다.
+
+| 구분 | 문항 수 | 평가 의도 | 정답 문서 수 |
+|---|---:|---|---:|
+| SciFact 문서 검색 | 40 | 공개 SciFact corpus의 과학 논문 abstract를 질문과 연결해 찾는 기본 retrieval | 대부분 1개 |
+| 학칙/HWP 및 Python source 단일 문서 검색 | 50 | `학칙.hwp`와 `modelcontextprotocol/python-sdk` Python source 파일을 제대로 ingest했는지 확인 | 대부분 1개 |
+| 다중 Python 파일 조합 검색 | 10 | 하나의 기능 흐름을 이해하려면 함께 봐야 하는 여러 `.py` 파일을 상위 rank에 올리는지 확인 | 3-7개 |
+
+다중 Python 파일 조합 문항은 예를 들어 다음과 같은 능력을 봅니다.
+
+- client transport, server transport, session manager, shared session이 함께 관련되는 흐름 찾기
+- OAuth client/server auth 파일과 Bearer middleware를 함께 찾기
+- stdio, SSE, streamable HTTP 같은 transport 양쪽 구현을 함께 찾기
+- tools, resources, prompts, initialize, request/notification/response 처리 흐름에서 여러 관련 파일을 함께 찾기
+
+일부 query는 정답 `doc_id`가 여러 개입니다. 이 경우 평가 서버는 관련 문서들을 상위 rank에 얼마나 잘 올렸는지 `nDCG@10`으로 계산합니다. 정답 문서 중 일부만 찾아도 부분 점수는 받을 수 있지만, 여러 관련 파일을 모두 상위권에 올릴수록 점수가 높아집니다.
+
+따라서 Python source 문서는 본문뿐 아니라 `filename`, `source_path`, class/function 이름, 모듈 경로 같은 metadata를 함께 활용하는 것이 유리합니다. 단, 최종 응답의 `doc_id`는 반드시 `corpus.jsonl`의 `_id`와 정확히 같아야 합니다.
 
 ## 필수 구현
 
@@ -181,12 +202,9 @@ curl -X POST https://YOUR-TUNNEL.trycloudflare.com/retrieve \
 
 Windows PowerShell에서는 `curl.exe`를 쓰세요.
 
-## 리더보드
+## 리더보드와 최종 점수
 
-이번 실습의 100개 hidden query 평가는 다음 주 최종평가를 미리 점검하기 위한 시뮬레이션입니다.
-2026-06-04 11:30 KST 평가 결과는 리더보드 확인용이며, 실습 점수에는 반영하지 않습니다.
-
-투표 결과에 따라 최종 승부는 마지막 주 평가에서 결정합니다. 마지막 주에는 새로 만든 hidden query 100개로 평가하며, 그 결과가 최종 순위 결정에 사용됩니다.
+최종 평가는 fixed hidden query 100개로 한 번 진행합니다. 최종 점수는 그 100문항의 평균 `nDCG@10`입니다.
 
 교수자 Windows 평가 서버가 다음 작업을 수행합니다.
 
@@ -199,45 +217,33 @@ Windows PowerShell에서는 `curl.exe`를 쓰세요.
 7. `nDCG@10` 계산
 8. GitHub Issue 리더보드 갱신
 
-각 평가 턴의 원점수는 비공개 질문 100개의 평균 `nDCG@10`입니다.
-
-```text
-turn_score_t = mean(nDCG@10 over 100 hidden queries at polling turn t)
-```
-
-리더보드 순위는 한 번의 최고점이 아니라 최근 유효 평가 점수의 moving average로 계산합니다. 최근 12번의 polling 기록 중에서 유효한 평가만 고르고, 그중 가장 최근 5개를 평균냅니다.
-
-```text
-V_t = valid evaluation turns among the latest 12 polling turns up to t
-W_t = last min(5, |V_t|) turns in V_t
-leaderboard_score_t = (1 / |W_t|) * sum(turn_score_i for i in W_t)
-```
-
-유효 평가는 `/health`와 `/retrieve`가 최소 1개 이상 성공해서 실제 검색 성능을 측정할 수 있었던 턴입니다. 서버가 꺼져 있거나 URL이 바뀐 `health_failed` 턴은 moving average에 0점으로 넣지 않습니다. 대신 `latest_status`, `latest_score`, `stale` 컬럼으로 현재 장애 상태와 몇 턴째 유효 평가가 없었는지를 표시합니다.
-
-이 방식은 RAG 서버나 tunnel이 일시적으로 실패한 턴의 충격을 줄이면서도, 한 번의 운 좋은 최고점이 계속 순위를 고정하지 못하게 하기 위한 것입니다. 장애가 오래 지속되어 최근 12번의 polling 안에 유효 평가가 없으면 `leaderboard_score`는 0이 됩니다.
-
-`best_score_so_far`는 참고용으로만 남습니다. 현재 순위 계산에는 `leaderboard_score`가 사용됩니다.
-
-## 최종 순위
-
-이번 실습 리더보드는 점수 산정에 들어가지 않습니다. 최종 rank는 마지막 주 100개 hidden query 평가 결과로 결정합니다.
-
-예상 형태:
+최종 원점수는 비공개 질문 100개의 평균 `nDCG@10`입니다.
 
 ```text
 final_score = mean(nDCG@10 over 100 final hidden queries)
 ```
 
-마지막 주 평가에는 이번 실습에서 사용한 hidden query가 아니라 새로 만든 hidden query를 사용합니다.
+최종 평가 시점에 서버가 꺼져 있거나 `rag_endpoint.json`의 Cloudflare URL이 최신이 아니면 `/health` 또는 `/retrieve`가 실패할 수 있습니다. 최종 평가 전에 RAG 서버, index 로딩, Cloudflare tunnel, `rag_endpoint.json` push 상태를 반드시 확인하세요.
+
+## 최종 순위
+
+최종 rank는 기말 프로젝트 fixed 100개 hidden query를 한 번 평가한 결과로 결정합니다.
+
+점수 형태:
+
+```text
+final_score = mean(nDCG@10 over 100 final hidden queries)
+```
+
+평가 질문과 qrels는 공개하지 않습니다. 공개 corpus 전체를 정확히 ingest하고, 원본 `doc_id`를 보존하며, 질문에 관련된 문서를 상위 rank에 올리는 일반적인 retrieval 전략이 필요합니다.
 
 ## Discussion 평가
 
-Discussion 활동은 실습 평가의 **15%**에 반영됩니다.
+Discussion 활동은 기말 프로젝트 평가의 **15%**에 반영됩니다.
 
 높은 상대점수를 받을 수 있는 활동 예시는 다음과 같습니다.
 
-- 이번 실습의 검색 실패 원인에 대한 토의
+- 기말 프로젝트 검색 실패 원인에 대한 토의
 - retrieval 성능을 높이는 ingest, chunking, metadata, reranking 방식에 대한 토론
 - 현재 SciFact보다 실습 난이도를 높일 수 있는 데이터셋 또는 평가 문제 추천
   - 데이터셋 추천은 파싱 관점 또는 retrieval 관점에서 작성하세요. 파싱 관점이라면 기존 `corpus.jsonl`처럼 `title`과 `text`가 바로 주어지는 경우와 달리, `title`과 `text`가 비어 있고 `filename`만 주어졌을 때 해당 파일을 직접 파싱해서 ingest해야 하는 구조를 제안할 수 있습니다.
