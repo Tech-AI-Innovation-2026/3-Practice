@@ -1,0 +1,733 @@
+[
+  {
+    "query_id": "1538",
+    "question": "Which SciFact paper argues that PRC1-class Polycomb proteins compact chromatin through localized high-charge regions?",
+    "answer_doc_ids": [
+      "19572798"
+    ]
+  },
+  {
+    "query_id": "1539",
+    "question": "Which document reviews molecular layers that control cytoskeletal remodeling during neurogenesis, neuronal migration, and terminal differentiation in cortical development?",
+    "answer_doc_ids": [
+      "26993601"
+    ]
+  },
+  {
+    "query_id": "1540",
+    "question": "Which article explains how low and oscillatory endothelial shear stress shapes coronary atherosclerosis and vascular remodeling?",
+    "answer_doc_ids": [
+      "7373453"
+    ]
+  },
+  {
+    "query_id": "1541",
+    "question": "Which study examined emotion regulation, emotional overeating, and eating pathology in obese adults with binge eating disorder?",
+    "answer_doc_ids": [
+      "40078758"
+    ]
+  },
+  {
+    "query_id": "1542",
+    "question": "Which paper reports successful long-term bone marrow cultures from patients across myelodysplastic syndrome subcategories using marrow biopsies?",
+    "answer_doc_ids": [
+      "24466904"
+    ]
+  },
+  {
+    "query_id": "1543",
+    "question": "Which document shows that epithelial NEMO prevents RIP kinase 1-mediated cell death and chronic intestinal inflammation through NF-kappaB-dependent and independent functions?",
+    "answer_doc_ids": [
+      "18956141"
+    ]
+  },
+  {
+    "query_id": "1544",
+    "question": "Which mitochondrial disease study identified a common set of complex I assembly intermediates in patients with complex I deficiency?",
+    "answer_doc_ids": [
+      "6636088"
+    ]
+  },
+  {
+    "query_id": "1545",
+    "question": "Which rat fever study tested whether brown adipose tissue and the sympathetic nervous system increase heat production after endotoxin exposure?",
+    "answer_doc_ids": [
+      "34582256"
+    ]
+  },
+  {
+    "query_id": "1546",
+    "question": "Which genetics paper integrates expression QTLs with complex trait association signals to nominate candidate causal regulatory effects?",
+    "answer_doc_ids": [
+      "2485101"
+    ]
+  },
+  {
+    "query_id": "1547",
+    "question": "Which review discusses DNA methylation and histone modification mechanisms in neurological disease, brain development, and aging?",
+    "answer_doc_ids": [
+      "22543403"
+    ]
+  },
+  {
+    "query_id": "1548",
+    "question": "Which diabetic monkey study reports that the engineered FGF21 variant LY2405319 improved glycemia and broader metabolic status?",
+    "answer_doc_ids": [
+      "1840993"
+    ]
+  },
+  {
+    "query_id": "1549",
+    "question": "Which comparative neuroanatomy paper argues that humans and great apes share a large frontal cortex rather than humans having a uniquely enlarged frontal lobe?",
+    "answer_doc_ids": [
+      "5921065"
+    ]
+  },
+  {
+    "query_id": "1550",
+    "question": "Which epithelial wound healing model analyzes how boundary conditions affect coordinated cell movement and MAPK activation waves?",
+    "answer_doc_ids": [
+      "6308416"
+    ]
+  },
+  {
+    "query_id": "1551",
+    "question": "Which review explains how extracellular vesicles such as exosomes carry proteins, lipids, and nucleic acids to regulate immune responses?",
+    "answer_doc_ids": [
+      "14692646"
+    ]
+  },
+  {
+    "query_id": "1552",
+    "question": "Which tish rat study links neural progenitor positioning, proliferation, and apoptosis defects to subcortical band heterotopia formation?",
+    "answer_doc_ids": [
+      "29231620"
+    ]
+  },
+  {
+    "query_id": "1553",
+    "question": "Which mouse study found defective mast cell effector functions when the CRACM1 or Orai1 pore subunit of store-operated calcium channels was absent?",
+    "answer_doc_ids": [
+      "13283919"
+    ]
+  },
+  {
+    "query_id": "1554",
+    "question": "Which molecular perspective review describes DNA topoisomerases as enzymes that solve DNA topology problems during replication and transcription?",
+    "answer_doc_ids": [
+      "5252837"
+    ]
+  },
+  {
+    "query_id": "1555",
+    "question": "Which genomics paper sequences the Tasmanian devil and its transmissible facial cancer to study disease spread and conservation?",
+    "answer_doc_ids": [
+      "8989616"
+    ]
+  },
+  {
+    "query_id": "1556",
+    "question": "Which twin pregnancy study monitored fetal development using maternal serum human placental lactogen and unconjugated estriol concentrations?",
+    "answer_doc_ids": [
+      "41131087"
+    ]
+  },
+  {
+    "query_id": "1557",
+    "question": "Which immunology paper shows that centrosome polarization delivers lytic secretory granules to the cytotoxic T cell immunological synapse?",
+    "answer_doc_ids": [
+      "4389252"
+    ]
+  },
+  {
+    "query_id": "1558",
+    "question": "Which lymph node imaging study shows that CD169-positive macrophages present lipid antigens for early activation of invariant NKT cells?",
+    "answer_doc_ids": [
+      "1933281"
+    ]
+  },
+  {
+    "query_id": "1559",
+    "question": "Which oncology review proposes post-prenylation-processing enzymes such as RCE1 and isoprenylcysteine carboxyl methyltransferase as targets?",
+    "answer_doc_ids": [
+      "12217662"
+    ]
+  },
+  {
+    "query_id": "1560",
+    "question": "Which myocarditis study reports that CD11b-positive monocytes suppress Th17 CD4 T cell-mediated experimental autoimmune myocarditis?",
+    "answer_doc_ids": [
+      "39084565"
+    ]
+  },
+  {
+    "query_id": "1561",
+    "question": "Which Arabidopsis study identifies a VAM3 or SYP22 allele that produces semi-dwarf plants with wavy leaves?",
+    "answer_doc_ids": [
+      "14926162"
+    ]
+  },
+  {
+    "query_id": "1562",
+    "question": "Which Cytoscape 2.8 paper introduces Custom Node Graphics and Attribute Equations for biological network visualization and data integration?",
+    "answer_doc_ids": [
+      "2883827"
+    ]
+  },
+  {
+    "query_id": "1563",
+    "question": "Which computational method infers nucleosome positions together with histone mark annotations from ChIP-seq data?",
+    "answer_doc_ids": [
+      "175735"
+    ]
+  },
+  {
+    "query_id": "1564",
+    "question": "Which CRISPR-Cas9 genome editing study improves precise homologous recombination by inhibiting nonhomologous end joining?",
+    "answer_doc_ids": [
+      "21561474"
+    ]
+  },
+  {
+    "query_id": "1565",
+    "question": "Which review discusses functions and applications of non-coding RNAs in endocrine-related cancer?",
+    "answer_doc_ids": [
+      "11484808"
+    ]
+  },
+  {
+    "query_id": "1566",
+    "question": "Which telomere biology paper shows that alternative lengthening of telomeres engages mitotic DNA synthesis and break-induced replication processes?",
+    "answer_doc_ids": [
+      "4319844"
+    ]
+  },
+  {
+    "query_id": "1567",
+    "question": "Which plant biology review describes oxygen sensing through the N-end rule pathway and ERF-VII transcription factors?",
+    "answer_doc_ids": [
+      "24923605"
+    ]
+  },
+  {
+    "query_id": "1568",
+    "question": "Which ATM gene study surveys polymorphism across diverse human populations and finds significant functional constraint?",
+    "answer_doc_ids": [
+      "10145528"
+    ]
+  },
+  {
+    "query_id": "1569",
+    "question": "Which antimicrobial susceptibility study compares agar dilution, microdilution, and disk elution methods for cefotaxime synergy against anaerobes?",
+    "answer_doc_ids": [
+      "46602807"
+    ]
+  },
+  {
+    "query_id": "1570",
+    "question": "Which microbiome reconstitution study restores bile acid-mediated resistance to Clostridium difficile after antibiotic disruption?",
+    "answer_doc_ids": [
+      "4465735"
+    ]
+  },
+  {
+    "query_id": "1571",
+    "question": "Which review describes microRNAs as 21- to 25-nucleotide small RNAs that negatively regulate gene expression after transcription?",
+    "answer_doc_ids": [
+      "86602746"
+    ]
+  },
+  {
+    "query_id": "1572",
+    "question": "Which peripheral arterial disease study compares C-reactive protein, fibrinogen, homocysteine, lipoprotein(a), and cholesterol screening as risk predictors?",
+    "answer_doc_ids": [
+      "72933407"
+    ]
+  },
+  {
+    "query_id": "1573",
+    "question": "Which small-molecule study reports restoring function to TRPML1 mutant isoforms responsible for mucolipidosis type IV?",
+    "answer_doc_ids": [
+      "21114100"
+    ]
+  },
+  {
+    "query_id": "1574",
+    "question": "Which mammalian autophagy study shows that class III PI3K Vps34 is essential for autophagy and for heart and liver function?",
+    "answer_doc_ids": [
+      "33507866"
+    ]
+  },
+  {
+    "query_id": "1575",
+    "question": "Which dendritic spine study shows mechanical coupling between transsynaptic N-cadherin adhesions and actin flow?",
+    "answer_doc_ids": [
+      "5700349"
+    ]
+  },
+  {
+    "query_id": "1576",
+    "question": "Which splicing review explains combinatorial control of exon recognition by the spliceosome in metazoan pre-mRNA processing?",
+    "answer_doc_ids": [
+      "13384318"
+    ]
+  },
+  {
+    "query_id": "1577",
+    "question": "Which leukemia cell study examines how BCR-ABL changes the kinetics and fidelity of DNA double-strand break repair?",
+    "answer_doc_ids": [
+      "21793890"
+    ]
+  },
+  {
+    "query_id": "1588",
+    "question": "streamable HTTP MCP 요청 흐름에서 src/mcp/client/streamable_http.py, src/mcp/server/streamable_http.py, src/mcp/server/streamable_http_manager.py, src/mcp/shared/session.py가 각각 어떤 역할인지 보려면 관련 파일들을 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/streamable_http.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/streamable_http_manager.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/shared/session.py"
+    ]
+  },
+  {
+    "query_id": "1589",
+    "question": "OAuth authorization code grant와 Bearer 인증 흐름을 src/mcp/client/auth/oauth2.py, src/mcp/server/auth/provider.py, src/mcp/server/auth/middleware/bearer_auth.py에서 함께 확인하려면 관련 파일들을 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/provider.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/middleware/bearer_auth.py"
+    ]
+  },
+  {
+    "query_id": "1590",
+    "question": "stdio 기반 MCP 실행에서 src/mcp/client/stdio.py, src/mcp/server/stdio.py, src/mcp/shared/session.py, src/mcp/server/lowlevel/server.py가 어떻게 연결되는지 보려면 관련 파일들을 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/stdio.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/stdio.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/shared/session.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/lowlevel/server.py"
+    ]
+  },
+  {
+    "query_id": "1591",
+    "question": "MCP tools/list와 tools/call 처리 흐름에서 src/mcp/server/mcpserver/server.py, src/mcp/server/mcpserver/tools/tool_manager.py, src/mcp/server/mcpserver/tools/base.py, src/mcp/server/mcpserver/utilities/func_metadata.py, src/mcp/server/lowlevel/server.py를 함께 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/server.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/tools/tool_manager.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/tools/base.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/utilities/func_metadata.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/lowlevel/server.py"
+    ]
+  },
+  {
+    "query_id": "1592",
+    "question": "MCP resources와 prompts 등록 흐름에서 src/mcp/server/mcpserver/server.py, src/mcp/server/mcpserver/resources/resource_manager.py, src/mcp/server/mcpserver/resources/templates.py, src/mcp/server/mcpserver/resources/base.py, src/mcp/server/mcpserver/prompts/manager.py, src/mcp/server/mcpserver/prompts/base.py, src/mcp/server/mcpserver/context.py를 함께 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/server.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/resources/resource_manager.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/resources/templates.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/resources/base.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/prompts/manager.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/prompts/base.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/context.py"
+    ]
+  },
+  {
+    "query_id": "1593",
+    "question": "MCP initialize와 capability negotiation을 src/mcp/client/session.py, src/mcp/server/session.py, src/mcp/server/lowlevel/server.py, src/mcp/types/_types.py에서 함께 확인하려면 관련 파일들을 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/session.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/session.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/lowlevel/server.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/types/_types.py"
+    ]
+  },
+  {
+    "query_id": "1594",
+    "question": "SSE transport에서 src/mcp/client/sse.py와 src/mcp/server/sse.py의 session id, endpoint event, POST message 처리와 src/mcp/shared/session.py 연결을 함께 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/sse.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/sse.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/shared/session.py"
+    ]
+  },
+  {
+    "query_id": "1595",
+    "question": "streamable HTTP server 보안과 transport 처리에서 src/mcp/server/transport_security.py, src/mcp/server/streamable_http.py, src/mcp/server/streamable_http_manager.py를 함께 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/transport_security.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/streamable_http.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/streamable_http_manager.py"
+    ]
+  },
+  {
+    "query_id": "1596",
+    "question": "ClientSession tools/list tools/call 호출과 server tool manager 및 Tool 타입 모델 연결을 src/mcp/client/session.py, src/mcp/server/mcpserver/tools/tool_manager.py, src/mcp/server/mcpserver/tools/base.py, src/mcp/types/_types.py에서 함께 찾아라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/session.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/tools/tool_manager.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/mcpserver/tools/base.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/types/_types.py"
+    ]
+  },
+  {
+    "query_id": "1597",
+    "question": "MCP request, notification, response 생명주기를 src/mcp/shared/session.py, src/mcp/server/lowlevel/server.py, src/mcp/server/session.py, src/mcp/client/session.py에서 함께 추적하라.",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/shared/session.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/lowlevel/server.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/session.py",
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/session.py"
+    ]
+  },
+  {
+    "query_id": "1488",
+    "question": "학칙에서 도서관 운영에 관한 발전계획, 운영위원회, 사서 배치기준 등의 세부사항은 어디에서 정한다고 설명하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1489",
+    "question": "한국공학대학교 사회봉사단의 설치 목적과 운영 세부사항은 학칙에서 어떻게 정하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1490",
+    "question": "산학협력단의 설치 근거와 정관 변경 인가 절차는 학칙 어디에서 다루는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1491",
+    "question": "학칙에서 학생지도계획 수립과 지도교수 임명, 학생지도위원회 설치를 정한 조항은 무엇인가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1492",
+    "question": "총학생회 회원 자격과 총장의 집회 승인 요구는 학칙에서 어떻게 규정되는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1493",
+    "question": "총학생회 이외의 학생단체를 조직하려면 어떤 심의와 승인을 거쳐야 하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1494",
+    "question": "학생 포상 대상은 품행, 학업성적, 선행과 관련해 학칙에서 어떻게 규정되는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1495",
+    "question": "학생 징계 사유 중 학칙 위반, 학생 본분 위배, 성희롱·성폭력 관련 사유는 어디에 열거되는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1496",
+    "question": "징계의 종류인 근신, 유기정학, 무기정학, 제적은 학칙의 어느 부분에서 정하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1497",
+    "question": "등록금 납부 연기와 분납은 어떤 경우 총장이 허용할 수 있다고 학칙은 설명하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1498",
+    "question": "학칙에서 등록금 반환 기준은 학기 개시 후 경과일수에 따라 어떻게 단계화되는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1499",
+    "question": "등록금 감면 대상은 품행, 성적, 경제사정, 국가보훈대상자와 관련해 어떻게 정해져 있는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1500",
+    "question": "공개강좌를 개설할 때 과목, 제목, 기간, 수강정원, 장소 등을 어디에 공고해야 하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1501",
+    "question": "위탁생 교육과 산업체 위탁 교육은 학칙에서 어떤 절차와 협약에 따라 운영되는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1502",
+    "question": "천재지변 등 재난 상황에서 원격수업이나 출석인정 등 학사운영을 어떻게 별도로 정할 수 있는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1503",
+    "question": "교수회의 구성원, 의장 선출, 의결 요건은 학칙에서 어떻게 규정되는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1504",
+    "question": "교무위원회는 누가 구성하고 교육 및 학사 중요사항 중 무엇을 심의하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1505",
+    "question": "대학평의원회는 어떤 교육 관련 중요사항을 심의하며, 개방이사 추천위원회 위원 추천도 포함하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1506",
+    "question": "등록금심의위원회는 학부와 대학원 등록금 책정에 대해 어떤 사항을 심의하는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1507",
+    "question": "학칙개정과 학사규정 제·개정은 공고, 의견수렴, 심의, 공포 절차를 어떻게 거치도록 되어 있는가?",
+    "answer_doc_ids": [
+      "tuk_school_regulations_2026_04_14"
+    ]
+  },
+  {
+    "query_id": "1508",
+    "question": "PKCEParameters.generate가 code_verifier와 SHA-256 기반 code_challenge를 생성하는 구현은 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1509",
+    "question": "OAuthContext가 현재 access token의 만료 여부와 refresh token 가능 여부를 판단하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1510",
+    "question": "OAuth 요청에 resource 파라미터를 포함할지 protected resource metadata와 protocol version으로 결정하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1511",
+    "question": "OAuth token 요청에서 client_secret_basic과 client_secret_post 인증 방식을 준비하는 prepare_token_auth 구현은 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1512",
+    "question": "OAuthClientProvider 초기화에서 client_metadata_url을 검증하고 OAuth client 설정을 보관하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1513",
+    "question": "401 응답의 WWW-Authenticate 헤더에서 protected resource metadata를 찾아 처리하는 OAuth client 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1514",
+    "question": "OAuth authorization code grant에서 state와 code_verifier를 만들고 redirect/callback handler를 호출하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1515",
+    "question": "authorization code를 token endpoint에 교환할 때 grant_type, code, redirect_uri, code_verifier를 보내는 구현은 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1516",
+    "question": "OAuthClientProvider가 refresh token으로 새 access token을 요청하고 refresh 응답을 처리하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1517",
+    "question": "httpx 요청에 Authorization: Bearer 헤더를 추가하는 OAuth client helper는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/auth/oauth2.py"
+    ]
+  },
+  {
+    "query_id": "1518",
+    "question": "OAuth 서버 provider에서 redirect URI에 code, state, error 같은 파라미터를 붙이는 construct_redirect_uri 함수는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/provider.py"
+    ]
+  },
+  {
+    "query_id": "1519",
+    "question": "ProviderTokenVerifier가 provider.load_access_token을 사용해 bearer token을 검증하는 구현은 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/provider.py"
+    ]
+  },
+  {
+    "query_id": "1520",
+    "question": "서버 OAuth AccessToken 모델에서 token, client_id, scopes, expires_at, resource 같은 필드를 정의하는 파일은 어디인가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/provider.py"
+    ]
+  },
+  {
+    "query_id": "1521",
+    "question": "AuthorizationParams와 AuthorizationCode 데이터 모델로 redirect_uri, code, scopes 정보를 표현하는 서버 auth 파일은 어디인가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/provider.py"
+    ]
+  },
+  {
+    "query_id": "1522",
+    "question": "BearerAuthBackend.authenticate가 Authorization 헤더에서 Bearer 토큰을 꺼내 TokenVerifier로 검증하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/middleware/bearer_auth.py"
+    ]
+  },
+  {
+    "query_id": "1523",
+    "question": "RequireAuthMiddleware가 인증 사용자와 required_scopes를 확인해 401 또는 403 응답을 보내는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/middleware/bearer_auth.py"
+    ]
+  },
+  {
+    "query_id": "1524",
+    "question": "인증 실패 응답에서 WWW-Authenticate Bearer 헤더와 JSON body를 조립하는 middleware 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/auth/middleware/bearer_auth.py"
+    ]
+  },
+  {
+    "query_id": "1525",
+    "question": "MCP server transport의 DNS rebinding 보호 설정인 allowed_hosts와 allowed_origins를 정의하는 파일은 어디인가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/transport_security.py"
+    ]
+  },
+  {
+    "query_id": "1526",
+    "question": "TransportSecurityMiddleware가 Host 헤더를 exact match와 :* wildcard port 패턴으로 검증하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/transport_security.py"
+    ]
+  },
+  {
+    "query_id": "1527",
+    "question": "POST 요청의 Content-Type을 application/json으로 검증하고 Host/Origin 검사를 수행하는 transport security 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/transport_security.py"
+    ]
+  },
+  {
+    "query_id": "1528",
+    "question": "StreamableHTTPTransport가 mcp-session-id와 mcp-protocol-version 헤더를 준비하는 client 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1529",
+    "question": "streamable HTTP client가 응답 헤더에서 session id를 추출하고 InitializeResult에서 protocol version을 저장하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1530",
+    "question": "streamable HTTP client에서 SSE event data를 JSON-RPC 메시지로 파싱하고 last_event_id를 갱신하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1531",
+    "question": "streamable HTTP client가 GET stream을 열고 405 응답이면 서버가 GET SSE를 지원하지 않는다고 처리하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1532",
+    "question": "Last-Event-ID를 사용해 streamable HTTP resumption 요청을 보내는 client 구현은 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1533",
+    "question": "streamable HTTP client가 POST 응답의 Content-Type에 따라 JSON response와 SSE response 처리를 나누는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1534",
+    "question": "streamable HTTP client가 현재 session id로 DELETE 요청을 보내 세션을 종료하는 코드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/client/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1535",
+    "question": "서버 streamable HTTP transport에서 event storage와 replay를 추상화한 EventStore 인터페이스는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1536",
+    "question": "StreamableHTTPServerTransport가 특정 요청의 SSE stream이나 standalone GET stream을 닫는 메서드는 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/server/streamable_http.py"
+    ]
+  },
+  {
+    "query_id": "1537",
+    "question": "공유 BaseSession에서 request id를 추적하고 timeout, progress callback, response 라우팅을 관리하는 send_request 구현은 어느 파일에 있는가?",
+    "answer_doc_ids": [
+      "mcp_python_sdk_src_3eb5799:src/mcp/shared/session.py"
+    ]
+  }
+]
